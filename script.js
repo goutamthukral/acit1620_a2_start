@@ -1,1 +1,27 @@
-/* This file is where all your work should go for Assignment 2.  Please remove this comment. */
+function cleanUpIndex(){
+
+}
+
+function createSingleIndex(){
+
+}
+
+function renderIndex(){
+
+}
+
+function cleanUpView(){
+
+}
+
+function renderView(){
+
+}
+
+function cleanUpCreate(){
+
+}
+
+function renderCreate(){
+
+}
