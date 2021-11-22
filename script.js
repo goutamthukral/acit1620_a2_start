@@ -47,11 +47,42 @@ function renderIndex(contactList){
 }
 
 function cleanUpView(){
-
+    let contactDiv = document.querySelector(".contactinfo");
+    contactDiv.remove()
 }
 
-function renderView(){
-
+function renderView(contact){
+    let contactDiv = document.querySelector(".main");
+    let contactinfo = document.createElement("div");
+    contactinfo.className = "contactinfo";
+    let contactname = document.createElement("div");
+    contactname.className = "contactname";
+    contactname.innerHTML = contact['name'];
+    let img = document.createElement("img");
+    img.src = "./img/profile.jpg";
+    img.className = "profilepic";
+    img.alt = "Profile picture"
+    contactname.appendChild(img);
+    contactinfo.appendChild(contactname);
+    let contactemail = document.createElement("div");
+    contactemail.className = "contactemail";
+    contactemail.innerHTML = "email: "+contact['email'];
+    contactinfo.appendChild(contactemail);
+    let contactphone = document.createElement("div");
+    contactphone.className = "contactphone";
+    contactphone.innerHTML = "cell: "+contact['phone'];
+    contactinfo.appendChild(contactphone);
+    let contactaddress = document.createElement("div");
+    contactaddress.className = "contactaddress";
+    contactaddress.innerHTML = "address: "+contact['address'];
+    contactinfo.appendChild(contactaddress);
+    let buttons = document.createElement("div");
+    buttons.className = "buttons";
+    buttons.innerHTML =
+    "<button class=\"button edit\" value=\"Edit\">Edit</button>" +
+    "<button class=\"button close\" value=\"Close\">Close</button>"
+    contactinfo.appendChild(buttons);
+    contactDiv.appendChild(contactinfo);
 }
 
 function cleanUpCreate(){
