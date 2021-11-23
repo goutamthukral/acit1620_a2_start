@@ -1,18 +1,3 @@
-let contactList = [
-    {
-      name: "Roberta Dobbs",
-      phone: "778-555-1234",
-      address: "101 Main St, Anytown, USA",
-      email: "subgenius@slack.example.com",
-    }, 
-    {
-      name: "Bugs Bunny",
-      phone: "123-867-5309",
-      address: "Warner Brothers Animation Lot",
-      email: "whatsup@doc.example.com",
-    },
-  ]
-
 function cleanUpIndex(){
     let contactDiv = document.querySelectorAll('.contact');
     for(i=0;i<contactDiv.length;i++)
