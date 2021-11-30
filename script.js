@@ -19,23 +19,19 @@ function loadIndex(){
 }
 
 document.getElementById('contactshome').addEventListener('click', (event) => {
-    var path = window.location.pathname;
-    var page = path.split("/").pop();
-    if(page == "index.html"){
         cleanUpIndex();
         renderIndex(contactList);
         event.preventDefault();
-    }
 });
 
 document.getElementById('newcontact').addEventListener('click', (event) => {
-    cleanUpCreate();
-    renderCreate(contactList[contactList.length-1]);
+    cleanUpIndex();
+    renderCreate();
     event.preventDefault();
 });
 
 function cleanUpIndex(){
-    let contactDiv = document.querySelectorAll('.main > a');
+    let contactDiv = document.querySelectorAll('.main > *');
     for(i=0;i<contactDiv.length;i++)
     {
         contactDiv[i].remove();
@@ -52,7 +48,6 @@ function createSingleIndex(contact){
     newDiv.appendChild(newParagraph);
     anchorTag.appendChild(newDiv);
     anchorTag.addEventListener('click', (event) => {
-        console.log("ghoossa");
         for (j=0; j<contactList.length; j++) {
             if (contactList[j]['name'] === anchorTag.innerText) {
                 cleanUpIndex();
@@ -74,7 +69,7 @@ function renderIndex(contactList){
 
 function cleanUpView(){
     let contactDiv = document.querySelector(".contactinfo");
-    contactDiv.remove()
+    contactDiv.remove();
 }
 
 function renderView(contact){
@@ -85,7 +80,7 @@ function renderView(contact){
     contactname.className = "contactname";
     contactname.innerHTML = contact['name'];
     let img = document.createElement("img");
-    img.src = "./img/profile.jpg";
+    img.src = "./profile.jpg";
     img.className = "profilepic";
     img.alt = "Profile picture"
     contactname.appendChild(img);
@@ -109,19 +104,25 @@ function renderView(contact){
     "<button class=\"button close\" value=\"Close\">Close</button>"
     contactinfo.appendChild(buttons);
     contactDiv.appendChild(contactinfo);
+    document.querySelector('.button.button.close').addEventListener('click', (event) => {
+        cleanUpView();
+        cleanUpIndex();
+        renderIndex(contactList);
+        event.preventDefault();
+    });
 }
 
 function cleanUpCreate(){
     let contactform = document.querySelector(".contactedit");
-    contactform.remove()
+    contactform.remove();
 }
 
-function renderCreate(contact){
+function renderCreate(){
     let contactDiv = document.querySelector(".main");
     let contactedit = document.createElement("div");
     contactedit.className = "contactedit";
     profilePicture = "<div class=\"contactimg\">" +
-                        "<img src=\"./img/profile.jpg\" class =\"profilepic\" alt=\"Profile picture\">" +
+                        "<img src=\"./profile.jpg\" class =\"profilepic\" alt=\"Profile picture\">" +
                      "</div>";
     contactedit.insertAdjacentHTML('afterbegin', profilePicture);               
     let contactform = document.createElement("div");
@@ -133,8 +134,7 @@ function renderCreate(contact){
     nameInput.setAttribute = ("type","text"); 
     nameInput.setAttribute = ("id","contactname");  
     nameInput.setAttribute = ("name","contactname");  
-    nameInput.setAttribute = ("placeholder","Contact Name");  
-    nameInput.value = contact['name'];
+    nameInput.placeholder = ("Contact Name");  
     contactNameForm.appendChild(nameInput);
     contactNameForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extranamefield\" name=\"extranamefield\">+</button>");
     form.appendChild(contactNameForm);
@@ -144,8 +144,7 @@ function renderCreate(contact){
     phoneInput.setAttribute = ("type","tel"); 
     phoneInput.setAttribute = ("id","contactphone");  
     phoneInput.setAttribute = ("name","contactphone");  
-    phoneInput.setAttribute = ("placeholder","Contact Phone");  
-    phoneInput.value = contact['phone'];
+    phoneInput.placeholder = ("Contact Phone");  
     contactPhoneForm.appendChild(phoneInput);
     contactPhoneForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraphonefield\" name=\"extraphonefield\">+</button>");
     form.appendChild(contactPhoneForm);
@@ -155,8 +154,7 @@ function renderCreate(contact){
     addressInput.setAttribute = ("type","text"); 
     addressInput.setAttribute = ("id","contactaddress");  
     addressInput.setAttribute = ("name","contactaddress");  
-    addressInput.setAttribute = ("placeholder","Contact Address");  
-    addressInput.value = contact['address'];
+    addressInput.placeholder = ("Contact Address");  
     contactAddressForm.appendChild(addressInput);
     contactAddressForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraaddressfield\" name=\"extraaddressfield\">+</button>");
     form.appendChild(contactAddressForm);
@@ -166,8 +164,7 @@ function renderCreate(contact){
     emailInput.setAttribute = ("type","email"); 
     emailInput.setAttribute = ("id","contactemail");  
     emailInput.setAttribute = ("name","contactemail");  
-    emailInput.setAttribute = ("placeholder","Contact Email");  
-    emailInput.value = contact['email'];
+    emailInput.placeholder = ("Contact Email");  
     contactEmailForm.appendChild(emailInput);
     contactEmailForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraemailfield\" name=\"extraemailfield\">+</button>");
     form.appendChild(contactEmailForm);
@@ -179,4 +176,22 @@ function renderCreate(contact){
     contactform.appendChild(form);
     contactedit.appendChild(contactform);
     contactDiv.appendChild(contactedit);
+    document.querySelector('.button#savecontact.button.save').addEventListener('click', (event) => {
+        let newObject = {
+            name: nameInput.value,
+            phone: phoneInput.value,
+            address: addressInput.value,
+            email: emailInput.value,
+        }
+        contactList.push(newObject);
+        cleanUpCreate();
+        renderView(contactList[contactList.length-1]);
+        event.preventDefault();
+    });
+    document.querySelector('.button#cancel.button.cancel').addEventListener('click', (event) => {
+        cleanUpCreate();
+        cleanUpIndex();
+        renderIndex(contactList);
+        event.preventDefault();
+    });
 }
