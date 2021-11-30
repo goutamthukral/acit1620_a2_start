@@ -1,5 +1,41 @@
+let contactList = [
+    {
+      name: "Roberta Dobbs",
+      phone: "778-555-1234",
+      address: "101 Main St, Anytown, USA",
+      email: "subgenius@slack.example.com",
+    },
+    {
+      name: "Bugs Bunny",
+      phone: "123-867-5309",
+      address: "Warner Brothers Animation Lot",
+      email: "whatsup@doc.example.com",
+    },
+]
+
+function loadIndex(){
+    cleanUpIndex();
+    renderIndex(contactList);
+}
+
+document.getElementById('contactshome').addEventListener('click', (event) => {
+    var path = window.location.pathname;
+    var page = path.split("/").pop();
+    if(page == "index.html"){
+        cleanUpIndex();
+        renderIndex(contactList);
+        event.preventDefault();
+    }
+});
+
+document.getElementById('newcontact').addEventListener('click', (event) => {
+    cleanUpCreate();
+    renderCreate(contactList[contactList.length-1]);
+    event.preventDefault();
+});
+
 function cleanUpIndex(){
-    let contactDiv = document.querySelectorAll('.contact');
+    let contactDiv = document.querySelectorAll('.main > a');
     for(i=0;i<contactDiv.length;i++)
     {
         contactDiv[i].remove();
@@ -15,22 +51,24 @@ function createSingleIndex(contact){
     newDiv.className = "contact";
     newDiv.appendChild(newParagraph);
     anchorTag.appendChild(newDiv);
-    console.log(anchorTag);
+    anchorTag.addEventListener('click', (event) => {
+        console.log("ghoossa");
+        for (j=0; j<contactList.length; j++) {
+            if (contactList[j]['name'] === anchorTag.innerText) {
+                cleanUpIndex();
+                renderView(contactList[j]);
+                event.preventDefault();
+            }
+        }
+    });
+    return anchorTag;
 }
 
 function renderIndex(contactList){
     for(i=0;i<contactList.length;i++)
     {
         let contactDiv = document.querySelector('.main');
-        let anchorTag = document.createElement("a");
-        anchorTag.href = "page3.html";
-        let newDiv = document.createElement("div");
-        let newP = document.createElement("p");
-        newP.innerHTML = contactList[i]['name'];
-        newDiv.className = "contact";
-        newDiv.appendChild(newP);
-        anchorTag.appendChild(newDiv);
-        contactDiv.appendChild(anchorTag);
+        contactDiv.appendChild(createSingleIndex(contactList[i]));
     }
 }
 
