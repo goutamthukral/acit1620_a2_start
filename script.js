@@ -104,6 +104,17 @@ function renderView(contact){
     "<button class=\"button close\" value=\"Close\">Close</button>"
     contactinfo.appendChild(buttons);
     contactDiv.appendChild(contactinfo);
+    document.querySelector('.button.button.edit').addEventListener('click', (event) => {
+        let contactLocation = 0;
+        for(i=0; i<contactList.length; i++){
+            if(contactList[i].name === contactname.textContent){
+                contactLocation = i;
+            }
+        }
+        cleanUpView();
+        renderEdit(contactList[contactLocation]);
+        event.preventDefault();
+    });
     document.querySelector('.button.button.close').addEventListener('click', (event) => {
         cleanUpView();
         cleanUpIndex();
@@ -186,6 +197,88 @@ function renderCreate(){
         contactList.push(newObject);
         cleanUpCreate();
         renderView(contactList[contactList.length-1]);
+        event.preventDefault();
+    });
+    document.querySelector('.button#cancel.button.cancel').addEventListener('click', (event) => {
+        cleanUpCreate();
+        cleanUpIndex();
+        renderIndex(contactList);
+        event.preventDefault();
+    });
+}
+
+//created another function renderEdit to edit a contact.
+//could have used renderCreate for the same, but didn't want to alter it.
+function renderEdit(contact){
+    let contactDiv = document.querySelector(".main");
+    let contactedit = document.createElement("div");
+    contactedit.className = "contactedit";
+    profilePicture = "<div class=\"contactimg\">" +
+                        "<img src=\"./profile.jpg\" class =\"profilepic\" alt=\"Profile picture\">" +
+                     "</div>";
+    contactedit.insertAdjacentHTML('afterbegin', profilePicture);               
+    let contactform = document.createElement("div");
+    contactform.className = "form";  
+    let form = document.createElement("form");
+    let contactNameForm = document.createElement("div");
+    contactNameForm.className = "inputcontainer";
+    let nameInput = document.createElement("input");  
+    nameInput.setAttribute = ("type","text"); 
+    nameInput.setAttribute = ("id","contactname");  
+    nameInput.setAttribute = ("name","contactname");  
+    nameInput.placeholder = ("Contact Name");
+    nameInput.value = contact['name'];  
+    contactNameForm.appendChild(nameInput);
+    contactNameForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extranamefield\" name=\"extranamefield\">+</button>");
+    form.appendChild(contactNameForm);
+    let contactPhoneForm = document.createElement("div");
+    contactPhoneForm.className = "inputcontainer";
+    let phoneInput = document.createElement("input");  
+    phoneInput.setAttribute = ("type","tel"); 
+    phoneInput.setAttribute = ("id","contactphone");  
+    phoneInput.setAttribute = ("name","contactphone");  
+    phoneInput.placeholder = ("Contact Phone");
+    phoneInput.value = contact['phone'];  
+    contactPhoneForm.appendChild(phoneInput);
+    contactPhoneForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraphonefield\" name=\"extraphonefield\">+</button>");
+    form.appendChild(contactPhoneForm);
+    let contactAddressForm = document.createElement("div");
+    contactAddressForm.className = "inputcontainer";
+    let addressInput = document.createElement("input");  
+    addressInput.setAttribute = ("type","text"); 
+    addressInput.setAttribute = ("id","contactaddress");  
+    addressInput.setAttribute = ("name","contactaddress");  
+    addressInput.placeholder = ("Contact Address");  
+    addressInput.value = contact['address'];
+    contactAddressForm.appendChild(addressInput);
+    contactAddressForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraaddressfield\" name=\"extraaddressfield\">+</button>");
+    form.appendChild(contactAddressForm);
+    let contactEmailForm = document.createElement("div");
+    contactEmailForm.className = "inputcontainer";
+    let emailInput = document.createElement("input");  
+    emailInput.setAttribute = ("type","email"); 
+    emailInput.setAttribute = ("id","contactemail");  
+    emailInput.setAttribute = ("name","contactemail");  
+    emailInput.placeholder = ("Contact Email"); 
+    emailInput.value = contact['email']; 
+    contactEmailForm.appendChild(emailInput);
+    contactEmailForm.insertAdjacentHTML('beforeend', "<button class=\"extrafield\" id=\"extraemailfield\" name=\"extraemailfield\">+</button>");
+    form.appendChild(contactEmailForm);
+    submitButtons = "<div class=\"buttons\">" +
+                        "<button type=\"submit\" class=\"button save\" id=\"savecontact\" name=\"savecontact\">Save Contact</button>" +
+                        "<button type=\"reset\" class=\"button cancel\" id=\"cancel\" name=\"cancel\">Cancel</button>" +
+                    "</div>";
+    form.insertAdjacentHTML('beforeend', submitButtons);
+    contactform.appendChild(form);
+    contactedit.appendChild(contactform);
+    contactDiv.appendChild(contactedit);
+    document.querySelector('.button#savecontact.button.save').addEventListener('click', (event) => {
+        contact['name'] = nameInput.value;
+        contact['phone'] = phoneInput.value,
+        contact['address'] = addressInput.value,
+        contact['email'] = emailInput.value,
+        cleanUpCreate();
+        renderView(contact);
         event.preventDefault();
     });
     document.querySelector('.button#cancel.button.cancel').addEventListener('click', (event) => {
